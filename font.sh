@@ -1,14 +1,13 @@
 #!/bin/bash
 #-------------------------------
 #
-#	Created By Shoeb Ahmed Khan
+#	Created By  Shoeb Ahmed Khan
 #
-# GIT Repo: https://github.com/shoeb816
-# Date: 23-NOV-2022
-# Email: shoeb.off@gmai.com
+# WEB: 
+# Date: 23-Nov-2022
 #------------------------------------------------------------------------------
 
-echo "Welcome to Bangla Font Installer !!!"
+echo "Welcome to Bangla Font Installer!!!"
 echo "------------------------------------"
 wgetexists=`/usr/bin/which wget`
 fontcacheexists=`/usr/bin/which fc-cache`
@@ -58,47 +57,46 @@ fi
 
 # Variables and choosing the mirror.
 echo -e "Choosing best mirror to download the files.\n"
-downloadUrl="https://github.com/shoeb816/linux-fonts/blob/main/banglafonts.tar.gz"
-#downloadUrls=("https://github.com/shoeb816/linux-fonts/blob/main/banglafonts.tar.gz")
-#finalurl="" # it will select lowest latency mirror
-#
-## Get arrays of latency and plain urls.
-#point=()
-#pointPlus=()
-#finalu=()
-#
-#for i in ${downloadUrls[@]};do 
-#  a=$(echo $i | sed 's|http://||g' | sed 's|https://||g' | cut -d '/' -f -1)
-#  aa=$(ping -c 1 "$a" | tail -1 | awk '{print $4}' | cut -d '/' -f 2)
-#  aaa=${aa%.*}
-#  point+=("$aaa")
-#  pointPlus+=("$aaa,$a")
-#  finalu+=("$aaa,$i")
-#done
-#
-## Calculate Minimum Latency
-##---------------------------
-#max=${point[0]}
-#min=${point[0]}
-#
-#echo "Latency: $min milliseconds";
-#
-## Loop through all elements in the array
-#for i in "${finalu[@]}"
-#do
-#    a=$(echo $i | cut -d ',' -f 1)
-#    # Update max if applicable
-#    if [[ "$a" -gt "$max" ]]; then
-#        max="$i"
-#    fi
-#
-#    # Update min if applicable
-#    if [[ "$a" -lt "$min" ]]; then
-#        min="$i"
-#    fi
-#done
-#finalurl=$(echo $min | cut -d ',' -f 2)
-#echo -e "Final Mirror: $finalurl \n"
+downloadUrls=("http://www.fahadahammed.com/extras/fonts/archieve/lsaBanglaFonts.tar.gz" "https://raw.githubusercontent.com/fahadahammed/linux-bangla-fonts/master/archieve/lsaBanglaFonts.tar.gz")
+finalurl="" # it will select lowest latency mirror
+
+# Get arrays of latency and plain urls.
+point=()
+pointPlus=()
+finalu=()
+
+for i in ${downloadUrls[@]};do 
+  a=$(echo $i | sed 's|http://||g' | sed 's|https://||g' | cut -d '/' -f -1)
+  aa=$(ping -c 1 "$a" | tail -1 | awk '{print $4}' | cut -d '/' -f 2)
+  aaa=${aa%.*}
+  point+=("$aaa")
+  pointPlus+=("$aaa,$a")
+  finalu+=("$aaa,$i")
+done
+
+# Calculate Minimum Latency
+#---------------------------
+max=${point[0]}
+min=${point[0]}
+
+echo "Latency: $min milliseconds";
+
+# Loop through all elements in the array
+for i in "${finalu[@]}"
+do
+    a=$(echo $i | cut -d ',' -f 1)
+    # Update max if applicable
+    if [[ "$a" -gt "$max" ]]; then
+        max="$i"
+    fi
+
+    # Update min if applicable
+    if [[ "$a" -lt "$min" ]]; then
+        min="$i"
+    fi
+done
+finalurl=$(echo $min | cut -d ',' -f 2)
+echo -e "Final Mirror: $finalurl \n"
 
 
 
@@ -107,10 +105,10 @@ downloadUrl="https://github.com/shoeb816/linux-fonts/blob/main/banglafonts.tar.g
 # Directory
 echo -e "Now creating the font directory for user: $USER.\n"
 if [ $USER = "root" ]; then
-  fontsDir="/root/.fonts/banglafonts"
+  fontsDir="/root/.fonts/lsaBanglaFonts"
 fi
 if [ $USER != "root" ]; then
-  fontsDir="/home/$USER/.fonts/banglafonts"
+  fontsDir="/home/$USER/.fonts/lsaBanglaFonts"
 fi
 echo -e "\n"
 if [ ! -d "$fontsDir" ]; then
@@ -122,17 +120,17 @@ else
 fi
 
 echo -e "\n"
-echo -e "Downloading compressed file from $downloadUrl....\n"
+echo -e "Downloading compressed file from $finalurl....\n"
 echo -e "\n"
-/usr/bin/wget -v -P $fontsDir"/" $downloadUrl
+/usr/bin/wget -v -P $fontsDir"/" $finalurl
 
 # Check if file is there and extractable
 cd $fontsDir"/"
-if [ -f banglafonts.tar.gz ];
+if [ -f lsaBanglaFonts.tar.gz ];
 then
     echo -e "Downloaded file successfully to extract and install fonts !\n";
-    tar -zxvf banglafonts.tar.gz;
-    rm banglafonts.tar.gz;
+    tar -zxvf lsaBanglaFonts.tar.gz;
+    rm lsaBanglaFonts.tar.gz;
 else
     echo -e "Fonts couldn't be retrieved. So exiting the installation.\n";
     exit;
@@ -147,4 +145,4 @@ echo -e "\n"
 
 echo "------------------------------------"
 echo "Download and Installation Complete !!!"
-echo -e "Script is Created by Shoeb Ahamed Khan\n"
+echo -e "Script is Created by Shoeb Ahmed Khan\n"
